@@ -125,6 +125,9 @@ public class Storage {
             pst.executeUpdate();
             examTry = new ExamTries(examTryId, grade, date);
 
+            pst.close();
+            minConnection.close();
+
         } catch (SQLException e) {
             if (e.getErrorCode() == 547) {
                 System.out.println("student ID eller examinations ID forkert");
@@ -157,13 +160,36 @@ public class Storage {
             pst.executeUpdate();
             examination = new Examination(examinationId, startTime, endTime, stopTest);
 
+            pst.close();
+            minConnection.close();
 
         } catch (SQLException e) {
-            System.out.println("fejl: " + e);
+            System.out.println("fejl: " + e.getMessage());
         }
 
         return examination;
     }
 
+    public static ArrayList<Student> getStudentsOnExamination(Exam exam, String term) {
+        ArrayList<Student> students = new ArrayList<>();
+        String sql = """
+                select s.id, s.studentName, et.grade from student s
+                inner join examTries et on s.id = et.StudentID
+                inner join examination em on et.examinationID = em.id
+                inner join exam e on em.examID = e.id
+                where e.id = ? and e.term = ?
+                """;
+        try {
+            PreparedStatement pst = minConnection.prepareStatement(sql);
+            pst.setInt(1, exam.getExamId());
+            pst.setString(2, term);
+
+            ResultSet resultSet;
+
+        } catch (SQLException e) {
+            System.out.println("fejl: " + e.getMessage());
+        }
+        return students;
+    }
 
 }
