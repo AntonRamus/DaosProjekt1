@@ -18,8 +18,7 @@ public class Storage {
             String connectionString = "jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=ProjektDaos;encrypt=true;trustServerCertificate=true";
             String userId = "sa";
             String password = "GaoY3vkXyG";
-            minConnection = DriverManager
-                    .getConnection(connectionString, userId, password);
+            minConnection = DriverManager.getConnection(connectionString, userId, password);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -125,6 +124,9 @@ public class Storage {
             pst.executeUpdate();
             examTry = new ExamTries(examTryId, grade, date);
 
+            pst.close();
+            minConnection.close();
+
         } catch (SQLException e) {
             if (e.getErrorCode() == 547) {
                 System.out.println("student ID eller examinations ID forkert");
@@ -157,13 +159,44 @@ public class Storage {
             pst.executeUpdate();
             examination = new Examination(examinationId, startTime, endTime, stopTest);
 
+            pst.close();
+            minConnection.close();
 
         } catch (SQLException e) {
-            System.out.println("fejl: " + e);
+            System.out.println("fejl: " + e.getMessage());
         }
 
         return examination;
     }
 
+    public static ArrayList<String> getStudentGradesOnExamination(Exam exam, String term) {
+        ArrayList<String> students = new ArrayList<>();
+        String sql = """
+                select s.id, s.studentName, et.grade from student s
+                inner join examTries et on s.id = et.StudentID
+                inner join examination em on et.examinationID = em.id
+                inner join exam e on em.examID = e.id
+                where e.id = ? and e.term = ?
+                """;
+        try {
+            PreparedStatement pst = minConnection.prepareStatement(sql);
+            pst.setInt(1, exam.getExamId());
+            pst.setString(2, term);
+
+            ResultSet resultSet = pst.executeQuery();
+            while (resultSet.next()) {
+                int studentId = resultSet.getInt(1);
+                String studentName = resultSet.getString(2);
+                String studentGrade = resultSet.getString(3);
+
+                String student = String.format("Id: %d \t Navn: %-20s Karakter: %s%n", studentId, studentName, studentGrade);
+                students.add(student);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("fejl: " + e.getMessage());
+        }
+        return students;
+    }
 
 }
