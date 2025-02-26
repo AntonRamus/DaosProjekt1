@@ -1,6 +1,5 @@
 package src.gui;
 
-import com.sun.javafx.runtime.eula.Eula;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -38,11 +37,11 @@ public class MainWindow extends Application {
         gridPane.add(topHbox,0,0);
 
         ComboBox<Education> uddannelseComboBox = new ComboBox<>();
-        uddannelseComboBox.getItems().setAll(Storage.getEducations());
+        uddannelseComboBox.setOnAction(e->updateUddannelseComboBox(uddannelseComboBox));
         topHbox.getChildren().add(uddannelseComboBox);
 
         ComboBox<Exam> eksamenComboBox = new ComboBox<>();
-        eksamenComboBox.getItems().setAll(Storage.getExamsOnEducation(uddannelseComboBox.getSelectionModel().getSelectedItem()));
+        eksamenComboBox.setOnAction(e->updateEksamenComboBox(eksamenComboBox, uddannelseComboBox));
         topHbox.getChildren().add(eksamenComboBox);
 
         VBox leftVBox = new VBox();
@@ -70,7 +69,7 @@ public class MainWindow extends Application {
         gridPane.add(hBox,0,2);
 
         Button button3 = new Button("Afvikel Eksamen");
-        button3.setOnAction(event->opretEksamenAction(uddannelseComboBox.getSelectionModel().getSelectedItem()));
+        button3.setOnAction(event-> afvikelEksamen(uddannelseComboBox.getSelectionModel().getSelectedItem()));
         hBox.getChildren().add(button3);
 
         Button button4 = new Button("Opret Eksamens Forsøg");
@@ -79,11 +78,23 @@ public class MainWindow extends Application {
 
     }
 
-    private void opretEksamenAction(Education education){
+    private void afvikelEksamen(Education education){
+        if (education!=null){
         new AfvikelEksamenWindow(education).showAndWait();
+        }
     }
 
     private void opretEksamensForsøgAction(Student student){
-        new OpretEksamensForsøgWindow(student).showAndWait();
+        if (student!=null) {
+            new OpretEksamensForsøgWindow(student).showAndWait();
+        }
+    }
+
+    private void updateUddannelseComboBox(ComboBox<Education> comboBox){
+        comboBox.getItems().setAll(Storage.getEducations());
+    }
+
+    private void updateEksamenComboBox(ComboBox<Exam> comboBox1, ComboBox<Education> comboBox2){
+        comboBox1.getItems().setAll(Storage.getExamsOnEducation(comboBox2.getSelectionModel().getSelectedItem()));
     }
 }

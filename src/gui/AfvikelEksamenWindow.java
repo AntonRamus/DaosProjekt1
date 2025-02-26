@@ -58,7 +58,7 @@ public class AfvikelEksamenWindow extends Stage {
         pane.add(startTidDatePicker,1,1);
         pane.add(slutTidDatePicker,1,2);
         pane.add(stoptestTextField,1,3);
-        examComboBox.getItems().setAll(Storage.getExamsOnEducation(education));
+        examComboBox.setOnAction(e -> updateExamComboBox(examComboBox, education));
         pane.add(examComboBox,1,4);
 
         Button afvikelButton = new Button("Afvikel");
@@ -79,6 +79,10 @@ public class AfvikelEksamenWindow extends Stage {
         Storage.createExamination(termin, startTime, slutTime, stopTest, exam);
 
         this.close();
+    }
+
+    private void updateExamComboBox(ComboBox<Exam> comboBox, Education education){
+        comboBox.getItems().setAll(Storage.getExamsOnEducation(education));
     }
 
 
