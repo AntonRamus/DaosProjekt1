@@ -8,4 +8,8 @@ public class Education {
         this.educationId = educationId;
         this.educationName = educationName;
     }
+
+    public int getEducationId() {
+        return educationId;
+    }
 }
