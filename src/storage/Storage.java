@@ -17,7 +17,7 @@ public class Storage {
         try {
             String connectionString = "jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=ProjektDaos;encrypt=true;trustServerCertificate=true";
             String userId = "sa";
-            String password = "password";
+            String password = "GaoY3vkXyG";
             minConnection = DriverManager
                     .getConnection(connectionString, userId, password);
         } catch (SQLException e) {
@@ -72,6 +72,33 @@ public class Storage {
             System.out.println("Fejl: " + e.getMessage());
         }
         return students;
+    }
+
+    public static ArrayList<Exam> getExamsOnEducation(Education education) {
+        ArrayList<Exam> exams = new ArrayList<>();
+        int educationId = education.getEducationId();
+
+        try {
+            PreparedStatement pst = minConnection.prepareStatement("select * from exam where educationID = ?");
+            pst.setInt(1, educationId);
+            ResultSet res = pst.executeQuery();
+
+            while (res.next()) {
+                int id = res.getInt(1);
+                String name = res.getString(2);
+                String term = res.getString(3);
+                String type = res.getString(4);
+                Exam exam = new Exam(id, name, term, type, education);
+                exams.add(exam);
+            }
+            res.close();
+            pst.close();
+            minConnection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Fejl: " + e.getMessage());
+        }
+        return exams;
     }
 
 
@@ -137,4 +164,6 @@ public class Storage {
 
         return examination;
     }
+
+
 }
