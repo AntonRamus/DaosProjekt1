@@ -8,7 +8,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -103,7 +102,7 @@ public class MainWindow extends Application {
 
     private void opretEksamensForsøgAction() {
 
-        new OpretEksamensForsøgWindow().showAndWait();
+        new OpretEksamensForsoegWindow().showAndWait();
 
     }
 
