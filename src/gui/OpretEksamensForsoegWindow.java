@@ -7,20 +7,16 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import src.application.models.Education;
-import src.application.models.Student;
 import src.storage.Storage;
 
 import java.time.LocalDate;
 
 //Gruppe 2 - Anton, Sidse og Victor
 
-public class OpretEksamensForsøgWindow extends Stage {
+public class OpretEksamensForsoegWindow extends Stage {
 
-    public OpretEksamensForsøgWindow(){
+    public OpretEksamensForsoegWindow(){
         setResizable(false);
         this.setTitle("Afvikling");
         GridPane pane = new GridPane();
