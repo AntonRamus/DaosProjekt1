@@ -38,7 +38,6 @@ public class Storage {
             }
             res.close();
             statement.close();
-            minConnection.close();
         } catch (SQLException e) {
             System.out.println("Fejl: " + e.getMessage());
         }
@@ -65,7 +64,6 @@ public class Storage {
             }
             res.close();
             pst.close();
-            minConnection.close();
 
         } catch (SQLException e) {
             System.out.println("Fejl: " + e.getMessage());
@@ -91,7 +89,6 @@ public class Storage {
             }
             res.close();
             pst.close();
-            minConnection.close();
 
         } catch (SQLException e) {
             System.out.println("Fejl: " + e.getMessage());
@@ -124,7 +121,6 @@ public class Storage {
             examTry = new ExamTries(examTryId, grade, date);
 
             pst.close();
-            minConnection.close();
 
         } catch (SQLException e) {
             if (e.getErrorCode() == 547) {
@@ -160,7 +156,6 @@ public class Storage {
             examination = new Examination(examinationId, startTime, endTime, stopTest, termin);
 
             pst.close();
-            minConnection.close();
 
         } catch (SQLException e) {
             System.out.println("fejl: " + e.getMessage());
@@ -197,6 +192,36 @@ public class Storage {
             System.out.println("fejl: " + e.getMessage());
         }
         return students;
+    }
+
+    public static ArrayList<Examination> getExaminationsOnExam(Exam exam) {
+        ArrayList<Examination> examinations = new ArrayList<>();
+        int examId = exam.getExamId();
+
+        try {
+            PreparedStatement pst = minConnection.prepareStatement("select * from examination where examID = ?");
+            pst.setInt(1, examId);
+            ResultSet res = pst.executeQuery();
+
+            while (res.next()) {
+                int id = res.getInt(1);
+                String[] startDate = res.getString(2).split("-");
+                String[] endDate = res.getString(3).split("-");
+                String term = res.getString(4);
+                boolean stopTest = res.getString(5).equals("yes");
+                Examination examination = new Examination(id,
+                        LocalDate.of(Integer.parseInt(startDate[0]), Integer.parseInt(startDate[1]), Integer.parseInt(startDate[2])),
+                        LocalDate.of(Integer.parseInt(endDate[0]), Integer.parseInt(endDate[1]), Integer.parseInt(endDate[2])),
+                        stopTest, term);
+                examinations.add(examination);
+            }
+            res.close();
+            pst.close();
+
+        } catch (SQLException e) {
+            System.out.println("Fejl: " + e.getMessage());
+        }
+        return examinations;
     }
 
 }
