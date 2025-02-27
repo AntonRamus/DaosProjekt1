@@ -85,9 +85,8 @@ public class Storage {
             while (res.next()) {
                 int id = res.getInt(1);
                 String name = res.getString(2);
-                String term = res.getString(3);
-                String type = res.getString(4);
-                Exam exam = new Exam(id, name, term, type, education);
+                String type = res.getString(3);
+                Exam exam = new Exam(id, name, type, education);
                 exams.add(exam);
             }
             res.close();
@@ -152,12 +151,13 @@ public class Storage {
             pst.setInt(1, examinationId);
             pst.setString(2, startTime.toString());
             pst.setString(3, endTime.toString());
-            pst.setString(4, stopTest ? "yes" : "no");
-            pst.setInt(5, exam.getExamId());
-            pst.setInt(6, exam.getEducation().getEducationId());
+            pst.setString(4, termin);
+            pst.setString(5, stopTest ? "yes" : "no");
+            pst.setInt(6, exam.getExamId());
+
 
             pst.executeUpdate();
-            examination = new Examination(examinationId, startTime, endTime, stopTest);
+            examination = new Examination(examinationId, startTime, endTime, stopTest, termin);
 
             pst.close();
             minConnection.close();
@@ -169,7 +169,7 @@ public class Storage {
         return examination;
     }
 
-    public static ArrayList<String> getStudentGradesOnExamination(Exam exam, String term) {
+    public static ArrayList<String> getStudentGradesOnExamination(Exam exam, Examination examination) {
         ArrayList<String> students = new ArrayList<>();
         String sql = """
                 select s.id, s.studentName, et.grade from student s
@@ -181,7 +181,7 @@ public class Storage {
         try {
             PreparedStatement pst = minConnection.prepareStatement(sql);
             pst.setInt(1, exam.getExamId());
-            pst.setString(2, term);
+            pst.setString(2, examination.getTerm());
 
             ResultSet resultSet = pst.executeQuery();
             while (resultSet.next()) {
