@@ -16,9 +16,11 @@ import src.storage.Storage;
 
 import java.time.LocalDate;
 
+//Gruppe 2 - Anton, Sidse og Victor
+
 public class OpretEksamensForsøgWindow extends Stage {
 
-    public OpretEksamensForsøgWindow(Student student){
+    public OpretEksamensForsøgWindow(){
         setResizable(false);
         this.setTitle("Afvikling");
         GridPane pane = new GridPane();

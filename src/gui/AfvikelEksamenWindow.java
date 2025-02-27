@@ -13,6 +13,8 @@ import src.storage.Storage;
 
 import java.time.LocalDate;
 
+//Gruppe 2 - Anton, Sidse og Victor
+
 public class AfvikelEksamenWindow extends Stage {
 
     public AfvikelEksamenWindow(Education education){
@@ -30,7 +32,7 @@ public class AfvikelEksamenWindow extends Stage {
     private TextField terminTextField = new TextField();
     private DatePicker startTidDatePicker = new DatePicker();
     private DatePicker slutTidDatePicker = new DatePicker();
-    private TextField stoptestTextField = new TextField();
+    private CheckBox stoptestCheckBox = new CheckBox();
     private ComboBox<Exam> examComboBox = new ComboBox<>();
 
 
@@ -57,8 +59,8 @@ public class AfvikelEksamenWindow extends Stage {
         pane.add(terminTextField,1,0);
         pane.add(startTidDatePicker,1,1);
         pane.add(slutTidDatePicker,1,2);
-        pane.add(stoptestTextField,1,3);
-        examComboBox.setOnAction(e -> updateExamComboBox(examComboBox, education));
+        pane.add(stoptestCheckBox,1,3);
+        updateExamComboBox(examComboBox, education);
         pane.add(examComboBox,1,4);
 
         Button afvikelButton = new Button("Afvikel");
@@ -73,7 +75,7 @@ public class AfvikelEksamenWindow extends Stage {
         String termin = terminTextField.getText();
         LocalDate startTime = startTidDatePicker.getValue();
         LocalDate slutTime = slutTidDatePicker.getValue();
-        boolean stopTest = Boolean.parseBoolean(stoptestTextField.getText());
+        boolean stopTest = stoptestCheckBox.isSelected();
         Exam exam = examComboBox.getValue();
 
         Storage.createExamination(termin, startTime, slutTime, stopTest, exam);

@@ -6,6 +6,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+//Gruppe 2 - Anton, Sidse og Victor
 public class Storage {
     private static Connection minConnection;
 
@@ -131,6 +132,7 @@ public class Storage {
         return examTry;
     }
 
+    //Opgave 8b
     public static Examination createExamination(String termin, LocalDate startTime, LocalDate endTime, boolean stopTest, Exam exam) {
         Examination examination = null;
         try {
@@ -164,6 +166,7 @@ public class Storage {
         return examination;
     }
 
+    //Opgave 8c
     public static ArrayList<String> getStudentGradesOnExamination(Exam exam, Examination examination) {
         ArrayList<String> students = new ArrayList<>();
         String sql = """
@@ -171,7 +174,7 @@ public class Storage {
                 inner join examTries et on s.id = et.StudentID
                 inner join examination em on et.examinationID = em.id
                 inner join exam e on em.examID = e.id
-                where e.id = ? and e.term = ?
+                where e.id = ? and em.term = ?
                 """;
         try {
             PreparedStatement pst = minConnection.prepareStatement(sql);

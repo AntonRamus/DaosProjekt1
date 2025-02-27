@@ -2,6 +2,8 @@ package src.application.models;
 
 import java.time.LocalDate;
 
+//Gruppe 2 - Anton, Sidse og Victor
+
 public class ExamTries {
     private final int examTryId;
     private final String grade;

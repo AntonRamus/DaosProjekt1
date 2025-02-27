@@ -1,5 +1,7 @@
 package src.application.models;
 
+//Gruppe 2 - Anton, Sidse og Victor
+
 public class Course {
     private final int courseId;
     private final String courseName;

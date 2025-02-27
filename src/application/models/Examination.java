@@ -2,6 +2,8 @@ package src.application.models;
 
 import java.time.LocalDate;
 
+//Gruppe 2 - Anton, Sidse og Victor
+
 public class Examination {
     private final int examinationId;
     private final LocalDate startDate;
@@ -18,6 +20,10 @@ public class Examination {
     }
 
     public String getTerm() {
+        return term;
+    }
+
+    public String toString() {
         return term;
     }
 }
