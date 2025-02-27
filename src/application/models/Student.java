@@ -10,4 +10,8 @@ public class Student {
         this.studentName = studentName;
         this.active = active;
     }
+
+    public String toString() {
+        return studentName;
+    }
 }

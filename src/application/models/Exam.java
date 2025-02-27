@@ -23,4 +23,8 @@ public class Exam {
     public Education getEducation() {
         return education;
     }
+
+    public String toString() {
+        return examName;
+    }
 }

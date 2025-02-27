@@ -12,4 +12,8 @@ public class Education {
     public int getEducationId() {
         return educationId;
     }
+
+    public String toString() {
+        return educationName;
+    }
 }
